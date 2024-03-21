@@ -1,0 +1,113 @@
+{% extends "layout.html" %} {% block body %}
+
+<h1>Welcome to Home Page</h1>
+<div class="grid-container mt-2">
+    {% for post in posts %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <nav aria-label="breadcrumb">
+                    <ol
+                        class="breadcrumb align-items-center w-100 "
+                    >
+                        <li>
+                            <img
+                                class="rounded-circle account-img"
+                                style="
+                                    width: 30px;
+                                    height: 30px;
+                                    margin: 0px 10px 0px 0;
+                                "
+                                src="{{post.image_src}}"
+                            />
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a class="text-decoration-none">{{ post.author.name }}</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <small class="text-muted"
+                                >{{ post.category.name }}</small
+                            >
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <h2 class="d-inline-blocks text-truncate w-100">
+                <a  style="text-decoration: none"
+                    class=""
+                    href="{{url_for('books.bookDetail', book_id=post.id)}}"
+                    >{{ post.name }}</a
+                >
+            </h2>
+            <figure class="figure w-100">
+                <div class="ratio ratio-1x1">
+                    <img
+                        src="{{post.image_src}}"
+                        class="figure-img img-fluid rounded"
+                        alt="..."
+                    />
+                </div>
+                <div class="article-description mt-2">{{ post.description }}</div>
+            </figure>
+        </div>
+        <div class="float-end" style="">
+            {% if post.in_stock() > 0 %}
+                <a
+                    class="btn btn-info text-white btn-sm me-2 icon-link icon-link-hover align-items-baseline"
+                    role="button"
+                    aria-disabled="true"
+                    href="{{ url_for('cart.quickAdd', id=post.id) }}"
+                    ><i class="bi bi-cart-plus-fill me-2"></i> Add Cart</a
+                >
+                <a
+                    class="btn btn-primary btn-sm"
+                    role="button"
+                    aria-disabled="true"
+                    href="{{url_for('cart.buy_now', id=post.id)}}"
+                    >Buy Now</a
+                >
+            {% endif %}
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+{% if cate_id == None%}
+    {% if pages>1 %}
+<ul class="pagination mt-1">
+        {% for i in range(pages) %}
+        <li class="page-item"><a class="page-link" href="/?page={{ i + 1 }}">{{ i + 1 }}</a></li>
+        {% endfor %}
+</ul>
+    {% endif %}
+{% endif %}
+
+
+    {% if cate_id   %}
+        {% if  numCate>1%}
+            <ul class="pagination mt-1">
+                {% for i in range(numCate) %}
+                    <li class="page-item">
+                        <a class="page-link" href="/?cate_id={{ cate_id }}&page={{ i + 1 }}">{{ i + 1 }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}{% endif %}
+
+
+
+    {% if kw   %}
+
+        {% if num>1 %}
+            <ul class="pagination mt-1">
+                {% for i in range(num) %}
+                    <li class="page-item">
+                        <a class="page-link" href="?search={{ kw }}&page={{ i + 1 }}">{{ i + 1 }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+    {% endif %}{% endif %}
+
+    
+{% endblock body %}

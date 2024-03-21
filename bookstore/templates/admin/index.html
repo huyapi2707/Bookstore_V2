@@ -1,0 +1,48 @@
+{% extends 'admin/master.html' %} {% block body %} {{ super() }}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-1">
+            <div style="color: red">{{arg1}}</div>
+            {% if not current_user.is_authenticated %}
+            <div style="color: red">{{err_msg | safe}}</div>
+            {% endif %}
+            {% if  current_user.is_authenticated %}
+            {% endif %}
+            {% if not current_user.is_authenticated %}
+            <p>
+                You can register as a regular user, or log in as a superuser
+                with the following credentials:
+            </p>
+            <ul>
+                <li>email: <b>admin@example.com</b></li>
+                <li>password: <b>admin</b></li>
+            </ul>
+            <p>
+                <a
+                    class="btn btn-primary"
+                    href="{{ url_for('security.login') }}"
+                    >login</a
+                >
+                <a
+                    class="btn btn-default"
+                    href="{{ url_for('security.register') }}"
+                    >register</a
+                >
+            </p>
+            {% endif %}
+            <p>
+                <a class="btn btn-primary" href="/"
+                    ><i class="glyphicon glyphicon-chevron-left"></i> Back</a>
+            </p>
+
+<div style="text-align: center">
+        <img style="height:700px "
+                 src="https://thammylinhanh.vn/wp-content/uploads/2023/12/hinh-chuc-nam-moi-2024.jpg">
+</div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock body %}
