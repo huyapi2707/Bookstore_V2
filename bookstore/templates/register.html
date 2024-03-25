@@ -1,12 +1,12 @@
 {% extends "layout.html" %} {% block content %}
 
-<h1>Registration Page</h1>
-<div class="content-section">
+<h1 class="dark-mode-h1">Registration Page</h1>
+<div class="content-section" style="color: black;">
     <form method="POST" action="">
         {{form.hidden_tag()}}
-        <fiedset class="form-group">
+        <fiedset class="form-group light-mode">
             <legend class="border-bottom mb-4">Join Today</legend>
-            <div class="form-group mt-2">
+            <div class="form-group mt-2" >
                 {{form.username.label(class="form-control-label")}} {% if
                 form.username.errors %} {{form.username(class="form-control
                 form-control-lg is-invalid")}}
@@ -62,7 +62,7 @@
     </form>
 </div>
 <div class="border-top py-3">
-    <small class="text-muted">
+    <small>
         Already Have An Account?
         <a class="ms-2" href="{{url_for('users.login')}}">Login</a>
     </small>

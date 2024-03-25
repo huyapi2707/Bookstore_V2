@@ -61,3 +61,74 @@ function getCommentHtml(comment){
     </div>
     `
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    var body = document.body;
+    var darkModeButton = document.querySelector('.dark-mode-button');
+
+    function toggleDarkMode(event) {
+        event.preventDefault();
+        body.classList.toggle('dark-mode');
+        var isDarkMode = body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode);
+
+        var icon = document.getElementById('switch_mode');
+        if (icon) {
+            if (isDarkMode) {
+                icon.classList.remove('bi-moon-stars-fill');
+                icon.classList.add('bi-brightness-high');
+            } else {
+                icon.classList.remove('bi-brightness-high');
+                icon.classList.add('bi-moon-stars-fill');
+            }
+        }
+        var h1Elements = document.querySelectorAll('h1');
+        var h3Elements = document.querySelectorAll('h3');
+        if (isDarkMode) {
+            h1Elements.forEach(function(element) {
+                element.classList.add('dark-mode-h1');
+            });
+            h3Elements.forEach(function(element) {
+                element.classList.add('dark-mode-h3');
+            });
+        } else {
+            h1Elements.forEach(function(element) {
+                element.classList.remove('dark-mode-h1');
+            });
+            h3Elements.forEach(function(element) {
+                element.classList.remove('dark-mode-h3');
+            });
+        }
+    }
+
+    darkModeButton.addEventListener('click', toggleDarkMode);
+
+    var isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        body.classList.add('dark-mode');
+        var icon = document.getElementById('switch_mode');
+        if (icon) {
+            icon.classList.remove('bi-moon-stars-fill');
+            icon.classList.add('bi-brightness-high');
+        }
+    }
+
+    window.addEventListener('pageshow', function (event) {
+        var isDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+            var icon = document.getElementById('switch_mode');
+            if (icon) {
+                icon.classList.remove('bi-moon-stars-fill');
+                icon.classList.add('bi-brightness-high');
+            }
+        } else {
+            body.classList.remove('dark-mode');
+            var icon = document.getElementById('switch_mode');
+            if (icon) {
+                icon.classList.remove('bi-brightness-high');
+                icon.classList.add('bi-moon-stars-fill');
+            }
+        }
+    });
+});

@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 
-<h1>Login Page</h1>
-<div class="content-section">
+<h1 class="dark-mode-h1">Login Page</h1>
+<div class="content-section" style="color: black;">
     <form method="POST" action="">
         {{form.hidden_tag()}}
         <fiedset class="form-group">
@@ -44,7 +44,7 @@
     </form>
 </div>
 <div class="border-top py-3">
-    <small class="text-muted">
+    <small>
         Create An New Account?
         <a class="ms-2" href="{{url_for('users.register')}}">Sign Up</a>
     </small>

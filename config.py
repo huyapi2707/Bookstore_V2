@@ -7,7 +7,7 @@ SECRET_KEY = 'c007d6402c1b77b1fac427a381d995fd'
 DEBUG = True
 
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://admin:%s@localhost/bookstore?charset=utf8mb4' % quote('admin')
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:%s@localhost/bookstore?charset=utf8mb4' % quote('d@Ikaquan2301')
 
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -40,7 +40,8 @@
                     >
                 </li>
             </ul>
-            <form
+            <div>
+                <form
                 class="d-flex"
                 role="search"
                 action="{{ url_for('main.searchItems') }}"
@@ -55,7 +56,13 @@
                 <button class="btn btn-outline-success" type="submit">
                     Search
                 </button>
+                <div class="container d-flex justify-content-between">
+                    <button class="dark-mode-button" id="switch_mode" style="outline: none; border: none; background: none; cursor: pointer; ">
+                        <span class="icon-container"><i class=""></i></span>
+                    </button>
+                </div>
             </form>
+            </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav ms-auto pl-3">
                 <a
