@@ -56,6 +56,7 @@ GOOGLE_OAUTH2_SCOPES = ['openid',
                         'https://www.googleapis.com/auth/user.addresses.read',
                         'https://www.googleapis.com/auth/user.gender.read',
                         'https://www.googleapis.com/auth/user.phonenumbers.read']
+
 GOOGLE_OAUTH2_CLIENT_SECRET_FILE = ""
 GOOGLE_OAUTH2_CLIENT_CALLBACK_URI = "https://127.0.0.1:5000/gg_oauth/callback"
 
