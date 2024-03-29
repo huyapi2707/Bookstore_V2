@@ -1,0 +1,212 @@
+{% extends "layout.html" %} {% block body %}
+    <script src="{{ url_for('static', filename='js/staff.js') }}" defer></script>
+    <div>Current staff</div>
+    <h2 class="account-heading">{{ current_user.first_name + " " + current_user.last_name }}</h2>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="sale-tab" data-bs-toggle="tab" data-bs-target="#sale" type="button"
+                    role="tab" aria-controls="nav-home" aria-selected="true">Sale
+            </button>
+            <button class="nav-link" id="manage-tab" data-bs-toggle="tab" data-bs-target="#manage" type="button"
+                    role="tab" aria-controls="nav-profile" aria-selected="false">Manage
+            </button>
+        </div>
+    </nav>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="sale" role="tabpanel" aria-labelledby="sale-tab">
+            <div class="mt-4">
+                <main class="container">
+                    <div class="row">
+                        <div class="content-section col-md-6 border-0">
+                            <form
+                                    method="POST"
+                                    action="{{ url_for('users.staff') }}"
+                                    class="row"
+                            >
+                                {{ form.hidden_tag() }} {{ form.csrf_token }}
+                                <fiedset class="form-group">
+                                    <legend class="border-bottom mb-2">
+                                        <h2 class="text-white rounded p-3 text-bg-info">
+                                            Product Order Form
+                                        </h2>
+                                    </legend>
+                                    <div class="d-flex gap-2 mb-2">
+                                        Id {{ form.id(class='form-control', type='number') }}
+                                    </div>
+                                    <div
+                                            class="d-flex justify-content-between align-items-center gap-2"
+                                    >
+                                        <div class="">Quantity</div>
+                                        {{ form.quantity(class='form-control',
+                            type='number', min=1, step=1, value=1) }}
+                                        <button
+                                                type="submit"
+                                                class="btn btn-info text-white"
+                                                style="white-space: nowrap"
+                                        >
+                                            <i class="bi bi-plus-square-fill"></i> Add
+                                        </button>
+                                    </div>
+                                </fiedset>
+                            </form>
+                        </div>
+                        <form autocomplete="off" action="{{ url_for('orders.checkout') }}" method="GET"
+                              class="col-md-6">
+                            <h3>Your Order</h3>
+                            <table class="table table-striped content-section">
+
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col" colspan="4">Book Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for product in products %}
+                                    <tr>
+                                        <td scope="row">1</td>
+                                        <td colspan="4">{{ product['name'] }}</td>
+                                        <td>{{ "{:,.0f}".format(product['unit_price']) }} VNĐ</td>
+                                        <td>{{ product['quantity'] }}</td>
+                                        <td>
+                                            <p
+                                            >{{ "{:,.0f}".format(product['total']) }} VNĐ</p
+                                            >
+                                        </td>
+                                        <th>
+                                            <a
+                                                    class="btn btn-danger btn-sm"
+                                                    href="{{ url_for('cart.removeFromCart', index=product['index'], next=url_for("users.staff")) }}"
+                                                    role="button"
+                                            >
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <table class="table content-section">
+                                <tbody>
+                                <tr>
+                                    <td><strong>Total Payment</strong></td>
+                                    <td class="text-center">
+                                        <strong class=""
+                                        > {{ "{:,.0f}".format(grand_total) }} VNĐ </strong
+                                        >
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+
+                            <div>
+                                <label for="user"><h3>Customer</h3></label>
+                                <input type="text" class="form-control" autocomplete="off" placeholder="User" aria-label="User"
+                                       id="searchUser" name="customer_phone"
+                                >
+                                <input type="hidden" class="form-control"
+                                       name="staff_id" value="{{ current_user.id }}"
+                                >
+                            </div>
+                            <button
+                                    type="submit"
+                                    class="btn btn-info text-white py-2 px-4 float-end fw-bold mt-2"
+                            >
+                                Buy
+                            </button>
+                        </form>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <div class="tab-pane fade " id="manage" role="tabpanel" aria-labelledby="manage-tab">
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div>
+                        <form id="searchOrder" action="">
+                            <div class="mb-3">
+                                <label for="orderID" class="form-label">Order ID</label>
+                                <input type="text" class="form-control" id="orderID" aria-describedby="orderHelp">
+                                <div id="orderHelp" class="form-text">Find order by ID</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Find</button>
+                        </form>
+                    </div>
+                    <div id="orderSummary" class="mt-5">
+                        <h3>Order Summary</h3>
+                        <div class="panel panel-primary mt-4">
+
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <p class=" d-flex justify-content-between" id="quantity-total">
+                                        Items
+                                    </p>
+                                    <p id="quick-ship" class=" d-flex justify-content-between">
+
+                                    </p>
+
+                                </li>
+                                <li class="list-group-item ">
+                                    <p class="d-flex justify-content-between" id="total-payment-plus-shipping">
+                                        Total
+                                    </p>
+                                </li>
+                                <li class="list-group-item ">
+                                    <p class="d-flex justify-content-between" id="order-status">
+                                        Status
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3>Action</h3>
+                        <div class="mt-4">
+                            <div class="row">
+                                <div class="col-md-7">
+
+                                    <input class="form-control " disabled type="number" min="0" id="input-money"
+                                           aria-describedby="cashLabel">
+                                    <label class="form-label form-text" for="input-money" id="cashLabel">For in cash
+                                        payment method only</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <button type="button" class="btn btn-primary disabled bottom-0" id="pay">Pay
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-primary disabled" id="delivered">Delivered
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 mt-4">
+                    <h3 class="ps-3">Order Details</h3>
+                    <table class="table table-striped mt-4">
+                        <thead>
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Book Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody id="orderDetails">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
