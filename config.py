@@ -4,6 +4,8 @@ import pathlib
 from urllib.parse import quote
 
 SECRET_KEY = 'c007d6402c1b77b1fac427a381d995fd'
+FERNET_KEY = 'je0NbYKUtH2GzGd_h2QSCsUlIiCZvaYFyZSMhWuERR4='
+
 
 # Debug mode
 DEBUG = True
@@ -61,5 +63,5 @@ GOOGLE_OAUTH2_CLIENT_CALLBACK_URI = "https://127.0.0.1:5000/gg_oauth/callback"
 
 # SSL
 # cần thay đổi trên từng máy
-CERTIFICATE_PATH = "D:\Code\Bookstore_V2\certificate.crt"
-PRIVATE_KEY_PATH = "D:\Code\Bookstore_V2\privateKey.key"
+CERTIFICATE_PATH = r"D:\Code\Bookstore_V2\certificate.crt"
+PRIVATE_KEY_PATH = r"D:\Code\Bookstore_V2\privateKey.key"

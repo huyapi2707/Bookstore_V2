@@ -1,4 +1,3 @@
-
 from flask import render_template, request, Blueprint, url_for, redirect, flash, session, jsonify
 from flask_security import logout_user, current_user, roles_accepted, login_required
 from google_auth_oauthlib.flow import Flow
@@ -9,7 +8,7 @@ from bookstore.users.forms import UpdateAccountForm, RegistrationForm, LoginForm
 from bookstore.cart.forms import AddToCart
 from bookstore.cart.utils import handle_cart
 from bookstore.users.utils import save_picture, send_verify_code, verify_account, resend_register_code, \
-    extract_search_user_by_phone, handle_oauth2_user
+    extract_search_user_by_phone, handle_oauth2_user, reset_password, handle_reset_password
 
 from bookstore import db, user_datastore
 from flask_security.utils import hash_password, login_user
@@ -55,9 +54,10 @@ def resend_verify_code():
 @users.route("/verify_account", methods=["GET", "POST"])
 def verify():
     user_id = int(request.args.get("user_id"))
+
     form = VerifyAccountForm()
     if request.method.__eq__("GET"):
-        return render_template("verify.html", form=form, user_id=user_id)
+        return render_template("verify.html", form=form)
     elif form.validate_on_submit():
         code = form.to_code()
         if verify_account(code) == 0:
@@ -65,7 +65,7 @@ def verify():
             return redirect(url_for('users.login'))
         else:
             flash("Can't verify your account", "danger")
-            return render_template("verify.html", form=form, user_id=user_id)
+            return render_template("verify.html", form=form)
 
 
 @users.route("/login", methods=["GET", "POST"])
@@ -185,7 +185,7 @@ def google_login():
     flow = Flow.from_client_secrets_file(config.GOOGLE_OAUTH2_CLIENT_SECRET_FILE, scopes=config.GOOGLE_OAUTH2_SCOPES)
     flow.redirect_uri = config.GOOGLE_OAUTH2_CLIENT_CALLBACK_URI
     authorization_url, state = flow.authorization_url(
-        access_type = "offline",
+        access_type="offline",
         include_granted_scopes='true'
     )
     session['gg_oauth_state'] = state
@@ -206,7 +206,8 @@ def google_auth_callback():
         flow.fetch_token(authorization_response=authorization_response)
         credentials = flow.credentials
         people_service = build("people", "v1", credentials=credentials)
-        person = people_service.people().get(resourceName="people/me", personFields="names,emailAddresses,genders,photos,phoneNumbers").execute()
+        person = people_service.people().get(resourceName="people/me",
+                                             personFields="names,emailAddresses,genders,photos,phoneNumbers").execute()
     except Exception as e:
         print(e)
         flash("Error in authorization process", "danger")
@@ -224,3 +225,43 @@ def google_auth_callback():
     else:
         flash("Error in login process", "danger")
         return redirect(url_for("users.register"))
+
+
+@users.route("/forget_password", methods=['get', 'post'])
+def forget_password():
+    if request.method.__eq__("GET"):
+        return render_template("forget_password.html")
+    else:
+        email = request.form.get("email")
+        if email is not None:
+            reset_password_url = reset_password(email)
+            if reset_password_url is not None:
+                return render_template("thanks.html",
+                                       content="We have sent reset password url to your email. It will be expired in 15 minutes")
+            else:
+                flash("Email doesn't exist", "danger")
+                return render_template("forget_password.html")
+        flash("Please enter your email", "warning")
+        return render_template("forget_password.html")
+
+
+@users.route("/forget_password/reset/<token>", methods=['get', 'post'])
+def forget_password_reset(token):
+    if token is None or token.__eq__("") or current_user.is_authenticated:
+        raise Exception("Invalid request")
+    if request.method == "GET":
+        return render_template("reset_password.html", token=token)
+    else:
+        new_password = request.form.get("new_password")
+        if not new_password.__eq__(request.form.get("confirm_password")):
+            flash("Confirm password doesn't match", "warning")
+            return render_template("reset_password.html")
+        else:
+            user = handle_reset_password(token, new_password)
+            if user is not None:
+                login_user(user, remember=True)
+                flash("Your password has been updated", "success")
+                return redirect(url_for("main.home"))
+            else:
+                raise Exception("Invalid request")
+

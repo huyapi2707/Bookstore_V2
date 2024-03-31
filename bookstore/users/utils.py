@@ -1,4 +1,6 @@
 import datetime
+from cryptography.fernet import Fernet
+from flask import url_for
 from flask_mailman import EmailMessage
 from flask_security import hash_password
 
@@ -6,6 +8,7 @@ import config
 from bookstore import dao
 import cloudinary.uploader
 from passlib import pwd
+
 
 def save_picture(form_picture):
     response = cloudinary.uploader.upload(form_picture)
@@ -103,6 +106,54 @@ def handle_oauth2_user(fetched_data):
     from_email = config.MAIL_USERNAME
     to_email = user.email
     content = f'Welcome to bookstore. \nYour initial password is: {initial_password} \nThank you.'
-    message = EmailMessage(from_email=from_email, subject="Your account's initial password", to=[to_email], body=content)
+    message = EmailMessage(from_email=from_email, subject="Your account's initial password", to=[to_email],
+                           body=content)
     message.send()
     return user
+
+
+def fernet_encrypt(plaintext, key=config.FERNET_KEY):
+    return Fernet(key.encode()).encrypt(plaintext.encode()).decode()
+
+
+def fernet_decrypt(ciphertext, key=config.FERNET_KEY):
+    return Fernet(key.encode()).decrypt(ciphertext.encode()).decode()
+
+
+def reset_password(email):
+    if email is not None:
+        user = dao.get_user_by_email(email)
+        if user and user.has_role("user"):
+
+            secret = fernet_encrypt(
+                user.email + '+' + (datetime.datetime.now() + datetime.timedelta(minutes=15)).__str__())
+            reset_url = url_for("users.forget_password_reset", token=secret, _external=True)
+            content = f'Your reset password url:\n{reset_url}\nThe url will expired in 15 minutes'
+            message = EmailMessage(from_email=config.MAIL_USERNAME, to=[email], subject="BOOKSTORE: RESET PASSWORD URL",
+                                   body=content)
+            message.send()
+            return reset_url
+        return None
+    return None
+
+
+def handle_reset_password(token, password):
+    try:
+        decrypt = fernet_decrypt(token).split("+")
+        email = decrypt[0]
+        date = decrypt[1]
+        user = dao.get_user_by_email(email)
+        date = datetime.datetime.strptime(date,"%Y-%m-%d %H:%M:%S.%f")
+
+        if user is not None and date > datetime.datetime.now():
+            password = hash_password(password)
+            user.password = password
+            dao.save_user(user)
+            return user
+        else:
+            return None
+    except Exception as e:
+        print(e)
+        return None
+
+
