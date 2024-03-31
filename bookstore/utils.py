@@ -207,3 +207,4 @@ def truncate_text(text, max_length=300):
     if len(text) > max_length:
         return text[:max_length] + "..."
     return text
+
