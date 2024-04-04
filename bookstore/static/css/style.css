@@ -2,7 +2,16 @@ body {
     background: #fafafa;
     color: #333333;
 }
-
+.media-body{
+    border: none;
+}
+.col-md-3{
+    width: 350px;
+    margin: 0.5rem;
+}
+.see_more{
+    border: none;
+}
 h1,
 h2,
 h3,
