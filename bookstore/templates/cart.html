@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h3 class="bold dark-mode-h3">
+    <h3 class="bold h1">
         <i class="glyphicon glyphicon-shopping-cart"></i> Your Shopping Cart
     </h3>
 
@@ -10,6 +10,7 @@
             <th scope="col">Image</th>
             <th scope="col">Book Name</th>
             <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
             <th scope="col">Total</th>
             <th scope="col"></th>
         </tr>
@@ -42,11 +43,11 @@
 
                 </div>
                 <th>
-<!--                    <p>-->
-<!--                        <strong-->
-<!--                        >{{ "{:,.0f}".format(product.total) }} VNĐ</strong-->
-<!--                        >-->
-<!--                    </p>-->
+                    <p>
+                        <strong
+                        >{{ "{:,.0f}".format(product.total) }} VNĐ</strong
+                        >
+                    </p>
                 </th>
                 <th>
                     <a class="btn btn-danger btn-xs" href="{{ url_for('cart.removeFromCart', index=product['index']) }}"
@@ -60,7 +61,7 @@
     </table>
 {% endblock content %}
 {% block index %}
-    <h3 class="bold dark-mode-h3">
+    <h3 class="bold h3">
         <i class="glyphicon glyphicon-th-list"></i> Cart Summary
     </h3>
 

@@ -24,7 +24,7 @@ def register():
                 username=form.username.data, email=form.email.data, password=hashed_password, active=False
             )
             db.session.commit()
-            if  send_verify_code(user_id=new_user.id) == 0:
+            if send_verify_code(user_id=new_user.id) == 0:
                 flash(f"Your account has been created! Please confirm your account by the code we sent to your email!", "success")
                 return redirect(url_for("users.verify", user_id = new_user.id))
             else:

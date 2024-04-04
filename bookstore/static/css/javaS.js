@@ -65,12 +65,18 @@ function getCommentHtml(comment){
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var darkModeButton = document.querySelector('.dark-mode-button');
+    var articles = document.querySelectorAll('article')
 
     function toggleDarkMode(event) {
         event.preventDefault();
         body.classList.toggle('dark-mode');
         var isDarkMode = body.classList.contains('dark-mode');
         localStorage.setItem('darkMode', isDarkMode);
+
+         articles.forEach(function(article) {
+        article.classList.toggle('dark-mode-article');
+        });
+
 
         var icon = document.getElementById('switch_mode');
         if (icon) {
@@ -88,15 +94,16 @@ document.addEventListener('DOMContentLoaded', function () {
             h1Elements.forEach(function(element) {
                 element.classList.add('dark-mode-h1');
             });
+
             h3Elements.forEach(function(element) {
-                element.classList.add('dark-mode-h3');
+                element.classList.add('dark-mode-h1');
             });
         } else {
             h1Elements.forEach(function(element) {
                 element.classList.remove('dark-mode-h1');
             });
             h3Elements.forEach(function(element) {
-                element.classList.remove('dark-mode-h3');
+                element.classList.remove('dark-mode-h1');
             });
         }
     }

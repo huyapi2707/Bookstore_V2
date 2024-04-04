@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block body %}
 
     <div>Current staff</div>
-    <h2 class="account-heading">{{ current_user.first_name + " " + current_user.last_name }}</h2>
+    <h2 class="account-heading h1">{{ current_user.first_name + " " + current_user.last_name }}</h2>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link active" id="sale-tab" data-bs-toggle="tab" data-bs-target="#sale" type="button"
@@ -52,7 +52,7 @@
                         </div>
                         <form autocomplete="off" action="{{ url_for('orders.checkout') }}" method="GET"
                               class="col-md-6">
-                            <h3>Your Order</h3>
+                            <h3 class="h3">Your Order</h3>
                             <table class="table table-striped content-section">
 
                                 <thead>
@@ -105,7 +105,7 @@
                             <br/>
 
                             <div>
-                                <label for="user"><h3>Customer</h3></label>
+                                <label for="user"><h3 class="h3">Customer</h3></label>
                                 <input type="text" class="form-control" placeholder="User" aria-label="User"
                                        id="searchUser" name="customer_phone" oninput="handleAutocompleteUser(this)"
                                 >

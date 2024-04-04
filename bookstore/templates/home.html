@@ -1,9 +1,9 @@
 {% extends "layout.html" %} {% block body %}
 
-<h1 class="dark-mode-h1">Welcome to Home Page</h1>
+<h1 class=" h1">Welcome to Home Page</h1>
 <div class="grid-container mt-2">
     {% for post in posts %}
-    <article class="media content-section">
+    <article class="media content-section cart">
         <div class="media-body">
             <div class="article-metadata">
                 <nav aria-label="breadcrumb">
@@ -47,7 +47,9 @@
                         alt="..."
                     />
                 </div>
-                <div class="article-description mt-2">{{ post.description }}</div>
+                <div class="article-description mt-2"
+                     style="font-size: 20px; color:red;"       >
+                    {{ "{:,.0f}".format(post.unit_price) }} VND</div>
             </figure>
         </div>
         <div class="float-end" style="">

@@ -13,6 +13,13 @@ body.dark-mode{
 .dark-mode-h3 {
     color: #fff;
 }
+article.cart{
+    background: #fff;
+}
+.dark-mode article.cart {
+    background-color: #e3ecfa;
+}
+
 
 
 h1,
