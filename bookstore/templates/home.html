@@ -1,10 +1,11 @@
 {% extends "layout.html" %} {% block body %}
 
 <h1>Welcome to Home Page</h1>
-<div class="grid-container mt-2">
+<section class="container">
+<div class="row">
     {% for post in posts %}
-    <article class="media content-section">
-        <div class="media-body">
+    <article class="media content-section cart col-xs-12 col-md-3 ">
+        <div class="media-body card ">
             <div class="article-metadata">
                 <nav aria-label="breadcrumb">
                     <ol
@@ -47,7 +48,10 @@
                         alt="..."
                     />
                 </div>
-                <div class="article-description mt-2">{{ post.description }}</div>
+                <div class="article-description mt-2"
+                     style="font-size: 20px; color:red;">
+                    {{ "{:,.0f}".format(post.unit_price) }} VND
+                </div>
             </figure>
         </div>
         <div class="float-end" style="">
@@ -71,6 +75,7 @@
     </article>
     {% endfor %}
 </div>
+</section>
 
 {% if cate_id == None%}
     {% if pages>1 %}

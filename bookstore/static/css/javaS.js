@@ -61,3 +61,15 @@ function getCommentHtml(comment){
     </div>
     `
 }
+function toggleDescription() {
+    var shortDescription = document.getElementById('short-description');
+    var fullDescription = document.getElementById('full-description');
+
+    if (fullDescription.style.display === 'none') {
+        fullDescription.style.display = 'inline'; // hoặc 'block'
+        shortDescription.style.display = 'none';
+    } else {
+        fullDescription.style.display = 'none';
+        shortDescription.style.display = 'inline';
+    }
+}
