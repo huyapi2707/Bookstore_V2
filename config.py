@@ -10,7 +10,7 @@ FERNET_KEY = 'je0NbYKUtH2GzGd_h2QSCsUlIiCZvaYFyZSMhWuERR4='
 # Debug mode
 DEBUG = True
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:%s@localhost/bookstore?charset=utf8mb4' % quote('d@Ikaquan2301')
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://admin:%s@localhost/bookstore?charset=utf8mb4' % quote('admin')
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -63,5 +63,5 @@ GOOGLE_OAUTH2_CLIENT_CALLBACK_URI = "https://127.0.0.1:5000/gg_oauth/callback"
 
 # SSL
 # cần thay đổi trên từng máy
-CERTIFICATE_PATH = "C:\\Users\\MinhQuan\\AppBook\\AppBook\\certificate.crt"
-PRIVATE_KEY_PATH = "C:\\Users\\MinhQuan\\AppBook\\AppBook\\privateKey.key"
+CERTIFICATE_PATH = r"D:\Code\Bookstore_V2\certificate.crt"
+PRIVATE_KEY_PATH = r"D:\Code\Bookstore_V2\privateKey.key"

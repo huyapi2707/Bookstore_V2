@@ -94,3 +94,9 @@ a.article-title:hover {
 .bi::before {
     vertical-align: 0 !important;
 }
+
+.see_more {
+    border: None;
+    background: None;
+    color: #428bca;
+}
